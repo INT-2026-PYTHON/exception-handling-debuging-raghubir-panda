@@ -155,7 +155,7 @@ def read_numbers(path):
         result = ("ok", total_sum, lines_read)
         
     finally:
-        print("Reading complete.")
+        print("Done reading")
         
     return result
 
