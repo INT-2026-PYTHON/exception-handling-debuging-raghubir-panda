@@ -77,3 +77,29 @@ Output Example 3:
 =================================================
 
 """
+def safe_get(items, index):
+    try:
+        value = items[index]
+        return ("ok", value)
+        
+    except IndexError:
+        return ("error", "Index out of range")
+        
+    except TypeError:
+        return ("error", "Index must be an int")
+        
+    except Exception as e:
+        return ("error", f"Unexpected error: {str(e)}")
+
+
+raw_items = input("Enter list items separated by commas (e.g. 10,20,30): ").strip()
+user_list = [item.strip() for item in raw_items.split(",") if item.strip()]
+raw_index = input(f"Enter an index to look up (Your list has {len(user_list)} items): ").strip()
+
+try:
+     user_index = int(raw_index)
+except ValueError:
+    user_index = raw_index
+
+result = safe_get(user_list, user_index)
+print(f"Result Tuple: {result}")

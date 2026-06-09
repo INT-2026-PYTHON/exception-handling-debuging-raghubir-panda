@@ -137,3 +137,73 @@ Explanation:
 =================================================
 
 """
+def process_records(records):
+    clean_records = []
+    error_log = []
+    index = 0  
+    
+    for record in records:
+        try:
+            name = record["name"]
+            raw_age = record["age"]
+            raw_score = record["score"]
+            
+            age = int(raw_age)
+            score = float(raw_score)
+            
+        except (KeyError, TypeError) as e:
+            error_class_name = type(e).__name__
+            
+            if error_class_name == "KeyError":
+                message = str(e).strip("'")
+            else:
+                message = str(e)
+                
+            error_log.append((index, error_class_name, message))
+            
+        except ValueError as e:
+            error_log.append((index, "ValueError", str(e)))
+            
+        else:
+            clean_records.append({
+                "name": name,
+                "age": age,
+                "score": score
+            })
+            
+        index += 1
+            
+    return clean_records, error_log
+
+
+def process_strict(records):
+    clean_records, error_log = process_records(records)
+    
+    if error_log:
+        num_failures = len(error_log)
+        raise RuntimeError(f"{num_failures} record(s) failed to process") from None
+        
+    return clean_records, error_log
+
+
+
+    records = [
+        {"name": "Alice", "age": "25",   "score": "88.5"},
+        {"name": "Bob",   "age": "abc",  "score": "70"},
+        {"name": "Carol", "age": "30"},                         # missing "score"
+        "not a dict",                                           # wrong type
+        {"name": "Dan",   "age": "40",   "score": "55.5"},
+    ]
+
+    clean_results, errors = process_records(records)
+    
+    print("Clean Records:")
+    print(clean_results)
+    
+    print("\nError Log:")
+    print(errors)
+
+    try:
+        process_strict(records)
+    except RuntimeError as e:
+        print(f"\nStrict mode raised: RuntimeError: {e}")
