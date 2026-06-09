@@ -130,7 +130,7 @@ def read_numbers(path):
     result = None
     
     try:
-        with open(path, 'r') as f:
+        with open(path) as f:
             for line in f:
                 cleaned_line = line.strip()
                 if not cleaned_line:
