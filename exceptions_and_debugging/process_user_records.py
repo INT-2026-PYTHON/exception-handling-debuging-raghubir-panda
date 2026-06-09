@@ -186,7 +186,7 @@ def process_strict(records):
     return clean_records, error_log
 
 
-if __name__ == "__main__":
+
     records = [
         {"name": "Alice", "age": "25",   "score": "88.5"},
         {"name": "Bob",   "age": "abc",  "score": "70"},
